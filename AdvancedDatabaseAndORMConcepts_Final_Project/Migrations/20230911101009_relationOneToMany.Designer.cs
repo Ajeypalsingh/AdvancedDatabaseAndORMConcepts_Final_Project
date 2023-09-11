@@ -4,6 +4,7 @@ using AdvancedDatabaseAndORMConcepts_Final_Project.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AdvancedDatabaseAndORMConcepts_Final_Project.Migrations
 {
     [DbContext(typeof(AdvancedDatabaseAndORMConcepts_Final_ProjectContext))]
-    partial class AdvancedDatabaseAndORMConcepts_Final_ProjectContextModelSnapshot : ModelSnapshot
+    [Migration("20230911101009_relationOneToMany")]
+    partial class relationOneToMany
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -24,11 +27,11 @@ namespace AdvancedDatabaseAndORMConcepts_Final_Project.Migrations
 
             modelBuilder.Entity("AdvancedDatabaseAndORMConcepts_Final_Project.Models.Item", b =>
                 {
-                    b.Property<int>("ItemId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ItemId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
@@ -51,7 +54,7 @@ namespace AdvancedDatabaseAndORMConcepts_Final_Project.Migrations
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
 
-                    b.HasKey("ItemId");
+                    b.HasKey("Id");
 
                     b.HasIndex("ListId");
 
@@ -60,18 +63,18 @@ namespace AdvancedDatabaseAndORMConcepts_Final_Project.Migrations
 
             modelBuilder.Entity("AdvancedDatabaseAndORMConcepts_Final_Project.Models.List", b =>
                 {
-                    b.Property<int>("ListId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ListId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(25)
                         .HasColumnType("nvarchar(25)");
 
-                    b.HasKey("ListId");
+                    b.HasKey("Id");
 
                     b.ToTable("List");
                 });

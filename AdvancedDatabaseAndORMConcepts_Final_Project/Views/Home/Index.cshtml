@@ -4,17 +4,22 @@
     ViewData["Title"] = "Home Page";
 }
 
+<H1>To Do Lists </H1>
+
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Id)
-            </th>
+                @Html.DisplayNameFor(model => model.ListId)
+            </th >
             <th>
                 @Html.DisplayNameFor(model => model.Title)
             </th>
             <th>
                 Number of Items
+            </th>
+            <th>
+                Action
             </th>
         </tr>
     </thead>
@@ -24,7 +29,7 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => l.Id)
+                    @Html.DisplayFor(modelItem => l.ListId)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => l.Title)
@@ -33,7 +38,7 @@
                     @Html.DisplayFor(modelItem => l.Items)
                 </td>
                 <td>
-                    <a asp-controller="lists" asp-action="Detail" asp-route-id="@l.Id">Details</a>
+                    <a class="btn btn-secondary" asp-controller="lists" asp-action="Details" asp-route-id="@l.ListId">Details</a>
                 </td>
             </tr>
         }

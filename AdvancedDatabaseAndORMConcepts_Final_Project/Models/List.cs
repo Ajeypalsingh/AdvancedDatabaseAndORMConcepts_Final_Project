@@ -6,7 +6,7 @@ namespace AdvancedDatabaseAndORMConcepts_Final_Project.Models
     public class List
     {
         [Key]
-        public int Id { get; set; }
+        public int ListId { get; set; }
 
         [Required]
         [MinLength(3, ErrorMessage = "Title must have 3 characters")]

@@ -19,115 +19,32 @@ namespace AdvancedDatabaseAndORMConcepts_Final_Project.Controllers
             _context = context;
         }
 
-        // GET: Lists
-        public async Task<IActionResult> Index()
-        {
-              return _context.List != null ? 
-                          View(await _context.List.ToListAsync()) :
-                          Problem("Entity set 'AdvancedDatabaseAndORMConcepts_Final_ProjectContext.List'  is null.");
-        }
-
-        // GET: Lists/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null || _context.List == null)
-            {
-                return NotFound();
-            }
-
-            var list = await _context.List
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (list == null)
-            {
-                return NotFound();
-            }
-
-            return View(list);
-        }
-
-        // GET: Lists/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Lists/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title")] List list)
+        public IActionResult Create([Bind("Id,Title")] List list)
         {
             if (ModelState.IsValid)
             {
                 _context.Add(list);
-                await _context.SaveChangesAsync();
-                return RedirectToAction("Index", "Home");
+                _context.SaveChanges();
+                return RedirectToAction("Details", new { id = list.ListId });
             }
             return View(list);
         }
 
-        // GET: Lists/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public IActionResult Details(int? id)
         {
             if (id == null || _context.List == null)
             {
                 return NotFound();
             }
 
-            var list = await _context.List.FindAsync(id);
-            if (list == null)
-            {
-                return NotFound();
-            }
-            return View(list);
-        }
-
-        // POST: Lists/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title")] List list)
-        {
-            if (id != list.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(list);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ListExists(list.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(list);
-        }
-
-        // GET: Lists/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null || _context.List == null)
-            {
-                return NotFound();
-            }
-
-            var list = await _context.List
-                .FirstOrDefaultAsync(m => m.Id == id);
+            List list = _context.List.Include(l => l.Items).FirstOrDefault(l => l.ListId == id);
             if (list == null)
             {
                 return NotFound();
@@ -136,28 +53,79 @@ namespace AdvancedDatabaseAndORMConcepts_Final_Project.Controllers
             return View(list);
         }
 
-        // POST: Lists/Delete/5
+
+        public IActionResult Delete(int? id)
+        {
+            if (id == null || _context.List == null)
+            {
+                return NotFound();
+            }
+
+            List list = _context.List.FirstOrDefault(m => m.ListId == id);
+            if (list == null)
+            {
+                return NotFound();
+            }
+            return View(list);
+        }
+
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public IActionResult DeleteConfirmed(int id)
         {
             if (_context.List == null)
             {
-                return Problem("Entity set 'AdvancedDatabaseAndORMConcepts_Final_ProjectContext.List'  is null.");
+                return Problem("Entity set 'FirstDbMVCAppContext.Course'  is null.");
             }
-            var list = await _context.List.FindAsync(id);
+            List list = _context.List.Find(id);
             if (list != null)
             {
                 _context.List.Remove(list);
             }
-            
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+
+            _context.SaveChanges();
+            return RedirectToAction("index", "home");
         }
 
-        private bool ListExists(int id)
+        public IActionResult AddItem(int? id)
         {
-          return (_context.List?.Any(e => e.Id == id)).GetValueOrDefault();
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            List list = _context.List.Include(l => l.Items).FirstOrDefault(l => l.ListId == id);
+
+            if (list == null)
+            {
+                return NotFound();
+            }
+
+            ViewBag.ListId = id;
+
+            Item item = new Item
+            {
+                List = list,
+            };
+            return View(item);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult AddItem([Bind("ItemId, Title, Priority, Description, IsCompleted, ListId")] Item item)
+        {
+            if (ModelState.IsValid)
+            {
+                item.CreatedDate = DateTime.Now;
+                _context.Add(item);
+                _context.SaveChanges();
+
+                return RedirectToAction("Details", "Lists", new { id = item.ListId });
+            }
+
+            ViewBag.ListId = item.ListId;
+            return View(item);
+
         }
     }
 }

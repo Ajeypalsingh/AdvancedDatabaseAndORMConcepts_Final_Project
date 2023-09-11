@@ -5,7 +5,7 @@ namespace AdvancedDatabaseAndORMConcepts_Final_Project.Models
     public class Item
     {
         [Key]
-        public int Id { get; set; }
+        public int ItemId { get; set; }
 
         [Required]
         [MinLength(3, ErrorMessage = "Title must have 3 characters")]
@@ -27,7 +27,7 @@ namespace AdvancedDatabaseAndORMConcepts_Final_Project.Models
     public enum Priority
     {
         High,
-        Midium, 
+        Medium, 
         Low
     }
 }

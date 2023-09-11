@@ -7,19 +7,41 @@
 
 <h1>Details</h1>
 
-<div>
-    <h4>List</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Title)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ListId)
+            </th>
+            <th>
+                Number of Items
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                @Html.DisplayFor(model => model.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.ListId)
+            </td>
+            <td>
+                0
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<a asp-action="Delete" asp-route-id="@Model?List.Id" class="btn btn-danger">Delete List</a>
+<a asp-controller="home" asp-action="Index" class="btn btn-secondary">Home</a>
+
+<hr />
+
+<h2>Tasks To Do</h2> 
+<a asp-action="AddItem" class="btn btn-primary" asp-route-id="@Model.ListId">Add Item</a>
+
+             
