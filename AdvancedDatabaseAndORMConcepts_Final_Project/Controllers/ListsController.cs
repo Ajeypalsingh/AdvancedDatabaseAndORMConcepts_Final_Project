@@ -56,13 +56,13 @@ namespace AdvancedDatabaseAndORMConcepts_Final_Project.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,DateTime")] List list)
+        public async Task<IActionResult> Create([Bind("Id,Title")] List list)
         {
             if (ModelState.IsValid)
             {
                 _context.Add(list);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Home");
             }
             return View(list);
         }
@@ -88,7 +88,7 @@ namespace AdvancedDatabaseAndORMConcepts_Final_Project.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,DateTime")] List list)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title")] List list)
         {
             if (id != list.Id)
             {

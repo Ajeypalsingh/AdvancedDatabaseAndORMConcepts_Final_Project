@@ -14,7 +14,7 @@ namespace AdvancedDatabaseAndORMConcepts_Final_Project.Data
         {
         }
 
-        public DbSet<AdvancedDatabaseAndORMConcepts_Final_Project.Models.List> List { get; set; } = default!;
-        public DbSet<AdvancedDatabaseAndORMConcepts_Final_Project.Models.Item> Item { get; set; } = default!;
+        public DbSet<List> List { get; set; } = default!;
+        public DbSet<Item> Item { get; set; } = default!;
     }
 }
