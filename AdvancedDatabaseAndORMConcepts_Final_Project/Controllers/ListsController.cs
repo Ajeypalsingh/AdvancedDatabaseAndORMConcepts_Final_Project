@@ -145,11 +145,17 @@ namespace AdvancedDatabaseAndORMConcepts_Final_Project.Controllers
             return RedirectToAction($"Details", new { id = item.ListId });
         }
 
-        public IActionResult ShowCompletedItem()
+        public IActionResult ShowCompletedItem(int id)
         {
-            HashSet<Item> completedItems = _context.Item.Where(i => i.IsCompleted).ToHashSet();
-            ViewBag.id = completedItems.First().ListId;
 
+            HashSet<Item> completedItems = _context.Item.Include(i => i.List).Where(i => i.ListId == id).Where(i => i.IsCompleted).ToHashSet();
+            
+            if (completedItems.Count == 0) 
+            {
+                return RedirectToAction("Details", new { id = id });
+            }
+
+            ViewBag.id = id;
             return View(completedItems);
         }
 

@@ -43,7 +43,7 @@
 </table>
 
 <a asp-controller="home" asp-action="Index" class="btn btn-secondary">Home</a>
-<a class="btn btn-success" asp-action="ShowCompletedItem">Show Completed Items</a>
+<a class="btn btn-success" asp-action="ShowCompletedItem" asp-route-id="@Model.ListId">Show Completed Items</a>
 <a asp-action="Delete" asp-route-id="@Model.ListId" class="btn btn-danger">Delete List</a>
 
 <hr />
@@ -65,6 +65,7 @@
     <tbody>
         @foreach (Item item in Model.Items.Where(i => !i.IsCompleted))
         {
+            
             <tr>
                 <td>@item.Title</td>
                 <td>
