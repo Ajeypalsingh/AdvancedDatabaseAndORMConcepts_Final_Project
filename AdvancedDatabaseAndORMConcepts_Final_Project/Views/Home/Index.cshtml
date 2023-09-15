@@ -1,4 +1,4 @@
-﻿@model IEnumerable<AdvancedDatabaseAndORMConcepts_Final_Project.Models.List>;
+﻿@model IEnumerable<AdvancedDatabaseAndORMConcepts_Final_Project.Models.List>
 
 @{
     ViewData["Title"] = "Home Page";
@@ -35,7 +35,7 @@
                     @Html.DisplayFor(modelItem => l.Title)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => l.Items)
+                    @l.Items.Count()
                 </td>
                 <td>
                     <a class="btn btn-secondary" asp-controller="lists" asp-action="Details" asp-route-id="@l.ListId">Details</a>

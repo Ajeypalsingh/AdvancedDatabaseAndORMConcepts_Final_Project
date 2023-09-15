@@ -9,13 +9,7 @@ namespace AdvancedDatabaseAndORMConcepts_Final_Project.Data
 {
     public class AdvancedDatabaseAndORMConcepts_Final_ProjectContext : DbContext
     {
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<List>()
-                .HasMany(l => l.Items)
-                .WithOne(i => i.List)
-                .HasForeignKey(i => i.ListId);
-        }
+        
         public AdvancedDatabaseAndORMConcepts_Final_ProjectContext (DbContextOptions<AdvancedDatabaseAndORMConcepts_Final_ProjectContext> options)
             : base(options)
         {

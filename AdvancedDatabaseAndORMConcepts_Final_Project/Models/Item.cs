@@ -9,7 +9,7 @@ namespace AdvancedDatabaseAndORMConcepts_Final_Project.Models
 
         [Required]
         [MinLength(3, ErrorMessage = "Title must have 3 characters")]
-        [MaxLength(250, ErrorMessage = "Title must have less than 250 characters")]
+        [MaxLength(50, ErrorMessage = "Title must have less than 50 characters")]
         public string Title { get; set; }
 
         [Display(Name = "Date of Creation")]
@@ -19,7 +19,7 @@ namespace AdvancedDatabaseAndORMConcepts_Final_Project.Models
         public string? Description { get; set; }
         public Priority Priority { get; set; }
         public bool IsCompleted { get; set; } = false;
-        public List List { get; set; }
+        public List? List { get; set; }
         public int ListId { get; set; }
         public Item() { }
     }

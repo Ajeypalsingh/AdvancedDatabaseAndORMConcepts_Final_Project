@@ -19,7 +19,7 @@ namespace AdvancedDatabaseAndORMConcepts_Final_Project.Controllers
 
         public IActionResult Index()
         {
-            HashSet<List> allLists = _context.List.Include(l => l.Items).ToHashSet();
+             HashSet<List> allLists = _context.List.Include(l => l.Items).ToHashSet();
             return View(allLists);
         }
                 

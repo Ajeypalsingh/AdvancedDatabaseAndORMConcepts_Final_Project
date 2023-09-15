@@ -1,7 +1,7 @@
 ﻿@model AdvancedDatabaseAndORMConcepts_Final_Project.Models.List
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "List Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -17,7 +17,10 @@
                 @Html.DisplayNameFor(model => model.ListId)
             </th>
             <th>
-                Number of Items
+                Number of Completed Items
+            </th>
+            <th>
+                Number of Pending Items
             </th>
         </tr>
     </thead>
@@ -30,18 +33,72 @@
                 @Html.DisplayFor(model => model.ListId)
             </td>
             <td>
-                0
+                @Model.Items.Count(i => i.IsCompleted)
+            </td>
+            <td>
+                @Model.Items.Count(i => !i.IsCompleted)
             </td>
         </tr>
     </tbody>
 </table>
 
-<a asp-action="Delete" asp-route-id="@Model?List.Id" class="btn btn-danger">Delete List</a>
 <a asp-controller="home" asp-action="Index" class="btn btn-secondary">Home</a>
+<a class="btn btn-success" asp-action="ShowCompletedItem">Show Completed Items</a>
+<a asp-action="Delete" asp-route-id="@Model.ListId" class="btn btn-danger">Delete List</a>
 
 <hr />
 
 <h2>Tasks To Do</h2> 
 <a asp-action="AddItem" class="btn btn-primary" asp-route-id="@Model.ListId">Add Item</a>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Created On</th>
+            <th>Priority</th>
+            <th>Completion Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Item item in Model.Items.Where(i => !i.IsCompleted))
+        {
+            <tr>
+                <td>@item.Title</td>
+                <td>
+                    @if (item.Description != null)
+                    {
+                        <p>@item.Description</p>
+                    } else
+                    {
+                        <p>No Description</p>
+                    }
+                </td>
+                <td>@item.CreatedDate.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                <td>@item.Priority</td>
+                <td>
+                   <form asp-action="IsCompleted" method="post">
+                       <input type="hidden" name="id" value="@item.ItemId" />
+                        <label>
+                            Is Completed
+                        </label>
+                        <input type="checkbox" name="isCompleted" value="true" @(item.IsCompleted ? "checked" : "") />
+                   </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+ 
+@section scripts {
+    <script>
+        // Submit the form when the checkbox changes
+        $('input[type="checkbox"]').change(function () {
+            $(this).closest('form').submit();
+        });
+    </script>
+}
 
              

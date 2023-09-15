@@ -1,15 +1,13 @@
 ﻿@model AdvancedDatabaseAndORMConcepts_Final_Project.Models.List
 
 @{
-    ViewData["Title"] = "Delete";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Delete List";
 }
 
-<h1>Delete</h1>
+<h1>Delete list</h1>
 
-<h3>Are you sure you want to delete this?</h3>
+<h3>Are you sure you want to delete '@Model.Title' list</h3>
 <div>
-    <h4>List</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -18,11 +16,17 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Title)
         </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ListId)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ListId)
+        </dd>
     </dl>
     
     <form asp-action="Delete">
         <input type="hidden" asp-for="ListId" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
+        <input type="submit" value="Delete" class="btn btn-danger" /> 
+        <a asp-action="Index" class="btn btn-secondary">Back to Lists</a>
     </form>
 </div>

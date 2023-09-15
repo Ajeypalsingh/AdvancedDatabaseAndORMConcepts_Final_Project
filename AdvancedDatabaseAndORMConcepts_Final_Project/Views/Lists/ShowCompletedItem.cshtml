@@ -1,0 +1,55 @@
+﻿@model IEnumerable<AdvancedDatabaseAndORMConcepts_Final_Project.Models.Item>
+
+
+
+<h1>Completed Tasks</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Created On</th>
+            <th>Priority</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Item item in Model.Where(i => i.IsCompleted))
+        {
+            <tr>
+                <td>@item.Title</td>
+                <td>
+                    @if (item.Description != null)
+                    {
+                        <p>@item.Description</p>
+                    }
+                    else
+                    {
+                        <p>No Description</p>
+                    }
+                </td>
+                <td>@item.CreatedDate.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                <td>@item.Priority</td>
+                <td>
+                    <form asp-action="IsCompleted" method="post">
+                        <input type="hidden" name="id" value="@item.ItemId" />
+                        <label>
+                            Is Completed
+                        </label>
+                        <input type="checkbox" name="isCompleted" value="true" @(item.IsCompleted ? "checked" : "") />
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<a asp-action="Details" class="btn btn-primary" asp-route-id="@ViewBag.id">Back to details</a>
+
+@section scripts {
+    <script>
+        // Submit the form when the checkbox changes
+        $('input[type="checkbox"]').change(function () {
+            $(this).closest('form').submit();
+        });
+    </script>
+}

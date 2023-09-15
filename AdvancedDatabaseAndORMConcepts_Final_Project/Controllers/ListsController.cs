@@ -37,7 +37,7 @@ namespace AdvancedDatabaseAndORMConcepts_Final_Project.Controllers
             return View(list);
         }
 
-        public IActionResult Details(int? id)
+        public IActionResult Details(int id)
         {
             if (id == null || _context.List == null)
             {
@@ -61,7 +61,7 @@ namespace AdvancedDatabaseAndORMConcepts_Final_Project.Controllers
                 return NotFound();
             }
 
-            List list = _context.List.FirstOrDefault(m => m.ListId == id);
+            List list = _context.List.Include(l => l.Items).FirstOrDefault(m => m.ListId == id);
             if (list == null)
             {
                 return NotFound();
@@ -70,7 +70,10 @@ namespace AdvancedDatabaseAndORMConcepts_Final_Project.Controllers
         }
 
         [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
+
+
+
+         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int id)
         {
             if (_context.List == null)
@@ -120,12 +123,36 @@ namespace AdvancedDatabaseAndORMConcepts_Final_Project.Controllers
                 _context.Add(item);
                 _context.SaveChanges();
 
-                return RedirectToAction("Details", "Lists", new { id = item.ListId });
+                return RedirectToAction("Details", new { id = item.ListId });
             }
 
             ViewBag.ListId = item.ListId;
             return View(item);
 
         }
+
+        [HttpPost]
+        public IActionResult IsCompleted(int id, bool isCompleted) 
+        { 
+            Item? item = _context.Item.FirstOrDefault(i => i.ItemId == id);
+
+            if (item != null)
+            {
+                item.IsCompleted = isCompleted;
+                _context.SaveChanges();
+            }
+
+            return RedirectToAction($"Details", new { id = item.ListId });
+        }
+
+        public IActionResult ShowCompletedItem()
+        {
+            HashSet<Item> completedItems = _context.Item.Where(i => i.IsCompleted).ToHashSet();
+            ViewBag.id = completedItems.First().ListId;
+
+            return View(completedItems);
+        }
+
+       
     }
 }
